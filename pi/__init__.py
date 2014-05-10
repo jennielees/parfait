@@ -1,3 +1,6 @@
+# Using libraries/flow from https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/morse_code/
+# Note that GPIO requires running scripts (including rqworker) as root.
+
 import RPi.GPIO as GPIO
 import time
 
