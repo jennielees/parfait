@@ -6,6 +6,8 @@ from settings import *
 from redis import StrictRedis
 from rq import Queue
 
+import time
+
 @app.route('/')
 def index():
    return render_template('index.html')
@@ -18,11 +20,15 @@ def ping():
         port=redis_url.port,
         password=redis_url.password
     )
-    print redis_conn
     q = Queue('high', connection=redis_conn)
-    result = q.enqueue('pi.receive_ping')
-    print result
-    return redirect(url_for('index'))
+    job = q.enqueue('pi.receive_ping')
+    finished = False
+    while not finished:
+      if job.result is not None:
+        finished = True
+      else:
+        time.sleep(0.5)
+    return "success"
 
 if __name__=="__main__":
     ping()

@@ -24,24 +24,38 @@
 <div class="blur"></div>
 <div class="splash-container">
     <div class="splash">
-        <h1 class="splash-head"><a class="pure-button" href="/ping"><i class="icon-unlock icon-large"></i>Unlock</a></h1>
+        <h1 class="splash-head"><a id="unlock-button" class="pure-button" href="#"><i class="icon-unlock icon-large"></i><span id="unlock-text">Unlock</span></a></h1>
         <p class="splash-subhead">
             With great power comes great responsibility.
         </p>
         <p>
+            <span id="error"></span>
         </p>
     </div>
 </div>
 
-<script src="http://yui.yahooapis.com/3.14.1/build/yui/yui.js"></script>
+<script src="/static/js/jquery-2.1.1.min.js"></script>
+
 <script>
-YUI().use('node-base', 'node-event-delegate', function (Y) {
-    // This just makes sure that the href="#" attached to the <a> elements
-    // don't scroll you back up the page.
-    Y.one('body').delegate('click', function (e) {
-        e.preventDefault();
-    }, 'a[href="#"]');
-});
+    function ping() {
+        $('#unlock-text').text('Unlocking...');
+        $.ajax({url:'/ping'})
+              .done(function(data) {
+                  if (data == "success") {
+                      $('#unlock-text').text('Unlocked');
+                      setTimeout(function() {
+                        $('#unlock-text').text('Unlock');
+                      }, 2000);
+                  } else {
+                      $('#error').append('Unexpected error. Please try again.');
+                  }
+              });
+    }
+     $(document).ready(function() {
+        $("#unlock-button").click(function() {
+            ping();
+        });
+    });
 </script>
 
 </body>
