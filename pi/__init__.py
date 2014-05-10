@@ -10,7 +10,12 @@ def receive_ping():
    return True
 
 def send_high(pin=DEFAULT_PIN, duration=1):
+  print "Lighting up pin %s for %s seconds." % (pin, duration)
   GPIO.setup(pin, GPIO.OUT)
   GPIO.output(pin, GPIO.HIGH)
   time.sleep(duration)
   GPIO.output(pin, GPIO.LOW)
+
+if __name__=="__main__":
+  # Command line test.
+  send_high()
