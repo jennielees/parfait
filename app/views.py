@@ -13,10 +13,13 @@ def index():
 def ping():
     job = create_job()
     finished = False
+    st = time.time()
     while not finished:
       if job.result is not None:
         finished = True
       else:
+        if (time.time() - st) > time.timedelta(seconds=10):
+          return "timeout"
         time.sleep(0.5)
     return "success"
 
