@@ -25,7 +25,7 @@ def listen_for_IR(pin=INPUT_PIN):
   print "Listening for IR"
   GPIO.setup(pin, GPIO.IN)
   input = GPIO.input(pin)
-  job = None
+  job = helper.create_job()
   while True:
     prev_input = input
     input = GPIO.input(pin)
