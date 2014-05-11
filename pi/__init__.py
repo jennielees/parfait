@@ -3,6 +3,7 @@
 
 import RPi.GPIO as GPIO
 import time
+from app.helper import create_job
 
 GPIO.setmode(GPIO.BCM)
 OUTPUT_PIN = 8
@@ -21,6 +22,7 @@ def send_high(pin=OUTPUT_PIN, duration=1):
   GPIO.output(pin, GPIO.LOW)
 
 def listen_for_IR(pin=INPUT_PIN):
+  print "Listening for IR"
   GPIO.setup(pin, GPIO.IN)
   input = GPIO.input(pin)
   while True:
@@ -29,8 +31,9 @@ def listen_for_IR(pin=INPUT_PIN):
     if input is False:
       # We've received a signal via IR
       print "Received IR signal on pin %s" % pin
-      send_high()
-    time.sleep(0.1)
+#      send_high()
+      create_job()
+    time.sleep(0.05)
 
 if __name__=="__main__":
   # Command line test.
