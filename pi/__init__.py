@@ -25,6 +25,7 @@ def listen_for_IR(pin=INPUT_PIN):
   print "Listening for IR"
   GPIO.setup(pin, GPIO.IN)
   input = GPIO.input(pin)
+  job = None
   while True:
     prev_input = input
     input = GPIO.input(pin)
@@ -32,7 +33,9 @@ def listen_for_IR(pin=INPUT_PIN):
       # We've received a signal via IR
       print "Received IR signal on pin %s" % pin
 #      send_high()
-      create_job()
+      job = create_job()
+    if job.result is not None:
+      print "Job finished: %s" % job.result
     time.sleep(0.05)
 
 if __name__=="__main__":
