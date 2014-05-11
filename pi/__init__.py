@@ -5,20 +5,34 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-DEFAULT_PIN = 8
+OUTPUT_PIN = 8
+INPUT_PIN = 18
 
 def receive_ping():
    print "Ping received"
    send_high()
    return True
 
-def send_high(pin=DEFAULT_PIN, duration=1):
+def send_high(pin=OUTPUT_PIN, duration=1):
   print "Lighting up pin %s for %s seconds." % (pin, duration)
   GPIO.setup(pin, GPIO.OUT)
   GPIO.output(pin, GPIO.HIGH)
   time.sleep(duration)
   GPIO.output(pin, GPIO.LOW)
 
+def listen_for_IR(pin=INPUT_PIN):
+  GPIO.setup(pin, GPIO.IN)
+  input = GPIO.input(pin)
+  while True:
+    prev_input = input
+    input = GPIO.input(pin)
+    if input is False:
+      # We've received a signal via IR
+      print "Received IR signal on pin %s" % pin
+      send_high()
+    time.sleep(0.1)
+
 if __name__=="__main__":
   # Command line test.
-  send_high()
+  listen_for_IR()
+#  send_high()
